@@ -118,16 +118,11 @@
     
     NSString *URLString = textField.text;
     
-    if ([URLString componentsSeparatedByString:@" "].count > 1){
-        // This is google search
-        URLString = [NSString stringWithFormat:@"http://www.google.com/search?q=%@", URLString];
-        URLString = [URLString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    }
+
     
     NSURL *URL = [NSURL URLWithString:URLString];
     
     if (!URL.scheme) {
-        NSLog(@"sheme!!!!");
         // The user didn't type http: or https:
         URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", URLString]];
     }
