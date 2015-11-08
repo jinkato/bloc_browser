@@ -118,7 +118,11 @@
     
     NSString *URLString = textField.text;
     
-
+    if ([URLString componentsSeparatedByString:@" "].count > 1){
+        // This is google search
+        URLString = [NSString stringWithFormat:@"http://www.google.com/search?q=%@", URLString];
+        URLString = [URLString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    }
     
     NSURL *URL = [NSURL URLWithString:URLString];
     
