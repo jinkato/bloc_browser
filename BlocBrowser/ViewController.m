@@ -213,4 +213,12 @@
     [self.reloadButton addTarget:self.webView action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
 }
 
+- (void) showalert {
+    UIAlertController * alert=   [UIAlertController alertControllerWithTitle:@"Welcome" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Close", nil)style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:NO completion:nil];
+}
+
+
 @end
