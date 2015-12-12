@@ -121,6 +121,12 @@
 
 
 
+- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPanch:(CGFloat)scale {
+    toolbar.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, scale);
+}
+
+
+
 
 
 #pragma mark - UITextFieldDelegate
