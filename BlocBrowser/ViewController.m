@@ -125,6 +125,17 @@
     toolbar.transform = CGAffineTransformScale(CGAffineTransformIdentity, scale, scale);
 }
 
+- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToLongHold:self{
+    UIColor* red = [UIColor redColor];
+    UIColor* buttonColor = toolbar.backgroundColor;
+    BOOL colorBool = [buttonColor isEqual:red];
+    if(colorBool){
+        toolbar.backgroundColor = [UIColor blueColor];
+    }else{
+        toolbar.backgroundColor = [UIColor redColor];
+    }
+}
+
 
 
 
