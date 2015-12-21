@@ -29,6 +29,8 @@
 
 @implementation AwesomeFloatingToolbar
 
+NSUInteger colorOffset = 0;
+
 - (instancetype) initWithFourTitles:(NSArray *)titles {
     // First, call the superclass (UIView)'s initializer, to make sure we do all that setup first.
     self = [super init];
@@ -51,25 +53,19 @@
             label.alpha = 0.25;
             NSUInteger currentTitleIndex = [self.currentTitles indexOfObject:currentTitle]; // 0 through 3
             NSString *titleForThisLabel = [self.currentTitles objectAtIndex:currentTitleIndex];
-            UIColor *colorForThisLabel = [self.colors objectAtIndex:currentTitleIndex];
             label.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
             label.titleLabel.font = [UIFont systemFontOfSize:10];
             [label setTitle: titleForThisLabel forState: UIControlStateNormal];
             label.tintColor = [UIColor whiteColor];
-            label.backgroundColor = colorForThisLabel;
+            NSUInteger index = [self.currentTitles indexOfObject:currentTitle];
+            [self updateBackgroundColor:label withIndex:index ];
             [labelsArray addObject:label];
             [label addTarget:self action:@selector(tapFired2:) forControlEvents:UIControlEventTouchDown];
         }
-        
         self.labels = labelsArray;
-        
         for (UIButton *thisLabel in self.labels) {
             [self addSubview:thisLabel];
         }
-        
-        
-//        self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFired:)];
-//        [self addGestureRecognizer:self.tapGesture];
         self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panFired:)];
         [self addGestureRecognizer:self.panGesture];
         self.pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchFired:)];
@@ -79,6 +75,15 @@
     }
     
     return self;
+}
+- (void) updateBackgroundColor:(UIButton*)thisButton withIndex:(NSUInteger)offset{
+    NSUInteger updatedOffset = offset + colorOffset;
+    if (updatedOffset > 3) {
+        updatedOffset = updatedOffset - 4;
+    }
+    NSLog(@"%ld", updatedOffset);
+    UIColor *colorForThisLabel = [self.colors objectAtIndex:updatedOffset];
+    thisButton.backgroundColor = colorForThisLabel;
 }
 
 
@@ -125,10 +130,17 @@
     }
 }
 
+
 - (void) longPressFired:(UIPinchGestureRecognizer *)recognizer {
     if (recognizer.state == UIGestureRecognizerStateEnded) {
-//        int colorLocation = 1;
-        [self.delegate floatingToolbar:self didTryToLongHold:nil];
+        colorOffset = colorOffset + 1;
+        if (colorOffset > 3) {
+            colorOffset = 0;
+        }
+        for (UIButton *thisButton in self.labels) {
+            NSUInteger index = [self.labels indexOfObject:thisButton];
+            [self updateBackgroundColor:thisButton withIndex:index];
+        }
     }
 }
 
